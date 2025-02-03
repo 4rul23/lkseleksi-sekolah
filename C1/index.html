@@ -1,0 +1,43 @@
+<html>
+<head>
+<style>
+  body {
+    cursor: pointer;
+  }
+
+
+
+
+  .click-area {
+    width: 70px;
+    height: 70px;
+    background-color: #5b5a5a;
+    border-radius: 50%;
+    opacity: 0;
+    position: fixed;
+    pointer-events: none;
+    transition: opacity 0.3s ease-out;
+  }
+
+  .click-area.active {
+    opacity: 0.5;
+  }
+</style>
+</head>
+<body class="custom-cursor">
+  <div class="click-area"></div>
+
+  <script>
+    document.addEventListener('click', function(e) {
+      const clickArea = document.querySelector('.click-area');
+      clickArea.style.left = (e.clientX - 50) + 'px';
+      clickArea.style.top = (e.clientY - 50) + 'px';
+      clickArea.classList.add('active');
+
+      setTimeout(() => {
+        clickArea.classList.remove('active');
+      }, 300);
+    });
+  </script>
+</body>
+</html>
