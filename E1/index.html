@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Answer Check</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 20px;
+      background-color: #fff;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+    th, td {
+      border: 1px solid #333;
+      padding: 8px 12px;
+      text-align: center;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    #score {
+      font-size: 18px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <table id="answerTable">
+    <thead>
+      <tr>
+        <th>Question</th>
+        <th>Actual Answer</th>
+        <th>Submitted Answer</th>
+      </tr>
+    </thead>
+    <!-- Table body will be injected by JS -->
+  </table>
+  <div id="score"></div>
+  <script src="index.js"></script>
+</body>
+</html>
