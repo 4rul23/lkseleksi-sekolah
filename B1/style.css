@@ -1,0 +1,75 @@
+.particle-btn::before,
+.particle-btn::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #ff598c;
+    opacity: 0;
+    transition: 0.5s ease-out;
+}
+
+.particle-btn::before {
+    box-shadow:
+        -30px -50px 0 #ff598c,
+        30px -30px 0 #ff598c,
+        -50px 50px 0 #ff598c,
+        50px 50px 0 #ff598c,
+        -70px 0 0 #ff598c,
+        70px 0 0 #ff598c,
+        0 -70px 0 #ff598c,
+        0 70px 0 #ff598c;
+}
+
+.particle-btn::after {
+    width: 6px;
+    height: 6px;
+    box-shadow:
+        -40px -40px 0 #ff598c,
+        40px -40px 0 #ff598c,
+        -40px 40px 0 #ff598c,
+        40px 40px 0 #ff598c,
+        -60px 0 0 #ff598c,
+        60px 0 0 #ff598c,
+        0 -60px 0 #ff598c,
+        0 60px 0 #ff598c;
+}
+
+.particle-btn:active::before {
+    animation: particle-1 0.8s ease-out;
+}
+
+.particle-btn:active::after {
+    animation: particle-2 0.8s ease-out 0.1s;
+}
+
+@keyframes particle-1 {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(4);
+        opacity: 0;
+    }
+}
+
+@keyframes particle-2 {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(3);
+        opacity: 0;
+    }
+}
