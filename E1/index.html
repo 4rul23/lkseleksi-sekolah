@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <title>Answer Check</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
   <style>
     body {
       font-family: sans-serif;
@@ -17,20 +16,22 @@
     }
     th, td {
       border: 1px solid #333;
-      padding: 8px 12px;
-      text-align: center;
+      padding: 8px;
+      text-align: left;
     }
     th {
-      background-color: #f2f2f2;
+      background-color: #eee;
     }
     #score {
-      font-size: 18px;
+      font-size: 1.2em;
       font-weight: bold;
     }
   </style>
 </head>
 <body>
-  <table id="answerTable">
+  <h1>Answer Check</h1>
+ 
+  <table id="resultsTable">
     <thead>
       <tr>
         <th>Question</th>
@@ -38,8 +39,11 @@
         <th>Submitted Answer</th>
       </tr>
     </thead>
-    <!-- Table body will be injected by JS -->
+    <tbody>
+
+    </tbody>
   </table>
+
   <div id="score"></div>
   <script src="index.js"></script>
 </body>

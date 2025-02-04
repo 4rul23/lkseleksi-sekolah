@@ -1,75 +1,69 @@
-
-function loadCSV(url) {
-    return new Promise((resolve, reject) => {
-      Papa.parse(url, {
-        download: true,
-        header: true,
-        complete: function (results) {
-          console.log('Parsed CSV:', results.data);
-          resolve(results.data);
-        },
-        error: function (error) {
-          console.error('Error parsing CSV:', error);
-          reject(error);
-        }
-      });
-    });
+(async function() {
+  async function loadCSV(url) {
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`Fetch failed with status: ${response.status}`);
+      }
+      const csvText = await response.text();
+      return csvText.trim().split('\n').map(row => row.split(','));
+    } catch (error) {
+      console.error('Error fetching CSV:', error);
+      throw error;
+    }
   }
 
   async function checkAnswers() {
     try {
-      const actualAnswers = await loadCSV('actual_answers.csv');
-      const submittedAnswers = await loadCSV('submitted_answers.csv');
+
+      const actualAnswersRaw = await loadCSV('a.csv');
+      const submittedAnswersRaw = await loadCSV('b.csv');
+
+      const actualAnswers = actualAnswersRaw;
+      const submittedAnswers = submittedAnswersRaw;
 
       console.log('Actual Answers:', actualAnswers);
       console.log('Submitted Answers:', submittedAnswers);
 
+      const tableBody = document.querySelector('#resultsTable tbody');
+      if (!tableBody) {
+        console.error('Could not find tbody in #resultsTable');
+        return;
+      }
 
-      const tableBody = document.createElement('tbody');
+      const totalCount = Math.max(actualAnswers.length, submittedAnswers.length);
       let correctCount = 0;
 
-      const totalQuestions = Math.min(actualAnswers.length, submittedAnswers.length);
+      for (let i = 0; i < totalCount; i++) {
+        const question = `Question ${i + 1}`;
+        const actualAnswer = actualAnswers[i] && actualAnswers[i][0] ? actualAnswers[i][0] : '';
+        const submittedAnswer = submittedAnswers[i] && submittedAnswers[i][0] ? submittedAnswers[i][0] : '';
 
-      for (let i = 0; i < totalQuestions; i++) {
-        const row = document.createElement('tr');
-
-
-        const questionCell = document.createElement('td');
-        questionCell.textContent = i + 1;
-
-
-        const actualAnswerCell = document.createElement('td');
-        actualAnswerCell.textContent = actualAnswers[i].Answer || '';
-
-
-        const submittedAnswerCell = document.createElement('td');
-        submittedAnswerCell.textContent = submittedAnswers[i].Answer || '';
-
-
-        if (actualAnswers[i].Answer === submittedAnswers[i].Answer) {
+        if (actualAnswer.trim() === submittedAnswer.trim()) {
           correctCount++;
         }
 
-        row.appendChild(questionCell);
-        row.appendChild(actualAnswerCell);
-        row.appendChild(submittedAnswerCell);
-        tableBody.appendChild(row);
+        const tr = document.createElement('tr');
+
+        const tdQuestion = document.createElement('td');
+        tdQuestion.textContent = question;
+
+        const tdActual = document.createElement('td');
+        tdActual.textContent = actualAnswer;
+
+        const tdSubmitted = document.createElement('td');
+        tdSubmitted.textContent = submittedAnswer;
+
+        tr.append(tdQuestion, tdActual, tdSubmitted);
+        tableBody.appendChild(tr);
       }
 
-
-      const answerTable = document.getElementById('answerTable');
-
-      const oldTbody = answerTable.querySelector('tbody');
-      if (oldTbody) oldTbody.remove();
-      answerTable.appendChild(tableBody);
-
-
       const scoreElement = document.getElementById('score');
-      scoreElement.textContent = `Score: ${correctCount}/${totalQuestions}`;
+      scoreElement.textContent = `Score: ${correctCount} / ${totalCount}`;
     } catch (error) {
-      console.error('Error checking answers:', error);
+      console.error('Error in checkAnswers:', error);
     }
   }
 
-
-  document.addEventListener('DOMContentLoaded', checkAnswers);
+  checkAnswers();
+})();
